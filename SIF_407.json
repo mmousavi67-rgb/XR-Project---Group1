@@ -1,0 +1,525 @@
+[
+    {
+        "id": "f8b194345e2ba8da",
+        "type": "tab",
+        "label": "SIF 407 by poc",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "866ff2c98c37a6f9",
+        "type": "inject",
+        "z": "f8b194345e2ba8da",
+        "name": "voltage",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "ns=3;s=\"MESCommunication\".\"MESPAEA_rVoltage\"",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 420,
+        "wires": [
+            [
+                "3b6788a42ffda61a"
+            ]
+        ]
+    },
+    {
+        "id": "3b6788a42ffda61a",
+        "type": "OpcUa-Client",
+        "z": "f8b194345e2ba8da",
+        "endpoint": "f36f2b6037217815",
+        "action": "subscribe",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": "1",
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "localkeyfile": "",
+        "securitymode": "None",
+        "securitypolicy": "None",
+        "useTransport": false,
+        "maxChunkCount": 1,
+        "maxMessageSize": 8192,
+        "receiveBufferSize": 8192,
+        "sendBufferSize": 8192,
+        "setstatusandtime": false,
+        "keepsessionalive": false,
+        "name": "",
+        "x": 580,
+        "y": 340,
+        "wires": [
+            [
+                "0302dc3834b78645",
+                "e15981a80911bb04"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "e15981a80911bb04",
+        "type": "function",
+        "z": "f8b194345e2ba8da",
+        "name": "function 3",
+        "func": "let value = msg.payload;\n\nif (typeof msg.payload === \"object\" && msg.payload !== null && msg.payload.value !== undefined) {\n    value = msg.payload.value;\n}\n\n\nlet topic = msg.topic || \"\";\nlet tag = null;\n\n\nif (topic.includes(\"MESPAEA_rVoltage\")) {\n    tag = \"voltage\";\n} else if (topic.includes(\"MESPAEA_rCurrent\")) {\n    tag = \"Current\";\n} else if (topic.includes(\"MESPAEA_rActivePower\")) {\n    tag = \"ActivePower\";\n} else if (topic.includes(\"MESPAEA_rPowerFactor\")) {\n    tag = \"PowerFactor\";\n} else if (topic.includes(\"MESPAEA_udiEnergyConsumed\")) {\n    tag = \"EnergyConsumed\";\n} else if (topic.includes(\"MESPAOEE_bAlarm\")) { \n    tag = \"Alarm\";\n} else if (topic.includes(\"MESPAOEE_bBusy\")) { \n    tag = \"Busy\";\n} else if (topic.includes(\"MESPAOEE_bIdle\")) { \n    tag = \"Idle\";\n} else if (topic.includes(\"MESPAOEE_bCycle\")) { \n    tag = \"Cycle\";\n} else if (topic.includes(\"MESPAOEE_udiAlarmTime\")) { \n    tag = \"AlarmTime\";\n} else if (topic.includes(\"MESPAOEE_udiBusyTime\")) { \n    tag = \"BusyTime\";\n} else if (topic.includes(\"MESPAOEE_udiCycleTime\")) { \n    tag = \"CycleTime\";\n} else if (topic.includes(\"MESPAOEE_udiIdleTime\")) { \n    tag = \"IdleTime\";\n}\n\nif (!tag) return null;\n\n\nlet state = flow.get(\"opcValues\") || {};\nstate[tag] = value; \nflow.set(\"opcValues\", state);\n\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0302dc3834b78645",
+        "type": "debug",
+        "z": "f8b194345e2ba8da",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "c838479a1472298c",
+        "type": "inject",
+        "z": "f8b194345e2ba8da",
+        "name": "Current",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "ns=3;s=\"MESCommunication\".\"MESPAEA_rCurrent\"",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 460,
+        "wires": [
+            [
+                "3b6788a42ffda61a"
+            ]
+        ]
+    },
+    {
+        "id": "1d971d753ede574c",
+        "type": "inject",
+        "z": "f8b194345e2ba8da",
+        "name": "ActivePower",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "ns=3;s=\"MESCommunication\".\"MESPAEA_rActivePower\"",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 500,
+        "wires": [
+            [
+                "3b6788a42ffda61a"
+            ]
+        ]
+    },
+    {
+        "id": "75ebd45eede2f0c7",
+        "type": "inject",
+        "z": "f8b194345e2ba8da",
+        "name": "PowerFactor",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "ns=3;s=\"MESCommunication\".\"MESPAEA_rPowerFactor\"",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 540,
+        "wires": [
+            [
+                "3b6788a42ffda61a"
+            ]
+        ]
+    },
+    {
+        "id": "00531f91c04d3572",
+        "type": "inject",
+        "z": "f8b194345e2ba8da",
+        "name": "EnergyConsumed",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "ns=3;s=\"MESCommunication\".\"MESPAEA_udiEnergyConsumed\"",
+        "payload": "",
+        "payloadType": "date",
+        "x": 190,
+        "y": 580,
+        "wires": [
+            [
+                "3b6788a42ffda61a"
+            ]
+        ]
+    },
+    {
+        "id": "b89ff564895580cf",
+        "type": "function",
+        "z": "f8b194345e2ba8da",
+        "name": "function 1",
+        "func": "let state = flow.get(\"opcValues\")||{};\nmsg.payload = state;\nmsg.headers = {\"Content-Type\":\"application/json\"};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 740,
+        "wires": [
+            [
+                "edf5c1264f9dc3f8"
+            ]
+        ]
+    },
+    {
+        "id": "40fb4429b31d200b",
+        "type": "http in",
+        "z": "f8b194345e2ba8da",
+        "name": "http in node",
+        "url": "/407data",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 740,
+        "wires": [
+            [
+                "b89ff564895580cf"
+            ]
+        ]
+    },
+    {
+        "id": "edf5c1264f9dc3f8",
+        "type": "http response",
+        "z": "f8b194345e2ba8da",
+        "name": "http response node",
+        "statusCode": "",
+        "headers": {},
+        "x": 990,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "ee511afbfaf5e6b5",
+        "type": "inject",
+        "z": "f8b194345e2ba8da",
+        "name": "Alarm",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "ns=3;s=\"MESCommunication\".\"MESPAOEE_bAlarm\"",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 20,
+        "wires": [
+            [
+                "3b6788a42ffda61a"
+            ]
+        ]
+    },
+    {
+        "id": "2ad5bc8801bdae7a",
+        "type": "inject",
+        "z": "f8b194345e2ba8da",
+        "name": "Busy",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "ns=3;s=\"MESCommunication\".\"MESPAOEE_bBusy\"",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 60,
+        "wires": [
+            [
+                "3b6788a42ffda61a"
+            ]
+        ]
+    },
+    {
+        "id": "97918a08d1e50a01",
+        "type": "inject",
+        "z": "f8b194345e2ba8da",
+        "name": "Idle",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "ns=3;s=\"MESCommunication\".\"MESPAOEE_bIdle\"",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 100,
+        "wires": [
+            [
+                "3b6788a42ffda61a"
+            ]
+        ]
+    },
+    {
+        "id": "4d6b3846d3da55d3",
+        "type": "inject",
+        "z": "f8b194345e2ba8da",
+        "name": "Cycle",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "ns=3;s=\"MESCommunication\".\"MESPAOEE_bCycle\"",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 140,
+        "wires": [
+            [
+                "3b6788a42ffda61a"
+            ]
+        ]
+    },
+    {
+        "id": "17427d2aa0a4275d",
+        "type": "inject",
+        "z": "f8b194345e2ba8da",
+        "name": "AlarmTime",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "ns=3;s=\"MESCommunication\".\"MESPAOEE_udiAlarmTime\"",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 200,
+        "wires": [
+            [
+                "3b6788a42ffda61a"
+            ]
+        ]
+    },
+    {
+        "id": "b9f519ca6e76cd10",
+        "type": "inject",
+        "z": "f8b194345e2ba8da",
+        "name": "BusyTime",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "ns=3;s=\"MESCommunication\".\"MESPAOEE_udiBusyTime\"",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 240,
+        "wires": [
+            [
+                "3b6788a42ffda61a"
+            ]
+        ]
+    },
+    {
+        "id": "58bb6d6b25f34791",
+        "type": "inject",
+        "z": "f8b194345e2ba8da",
+        "name": "CycleTime",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "ns=3;s=\"MESCommunication\".\"MESPAOEE_udiCycleTime\"",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 280,
+        "wires": [
+            [
+                "3b6788a42ffda61a"
+            ]
+        ]
+    },
+    {
+        "id": "2f4af66f3ade295c",
+        "type": "inject",
+        "z": "f8b194345e2ba8da",
+        "name": "IdleTime",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "ns=3;s=\"MESCommunication\".\"MESPAOEE_udiIdleTime\"",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 320,
+        "wires": [
+            [
+                "3b6788a42ffda61a"
+            ]
+        ]
+    },
+    {
+        "id": "f36f2b6037217815",
+        "type": "OpcUa-Endpoint",
+        "endpoint": "opc.tcp://130.130.130.6:4840",
+        "secpol": "None",
+        "secmode": "None",
+        "none": true,
+        "login": false,
+        "usercert": false,
+        "usercertificate": "admin",
+        "userprivatekey": "admin"
+    },
+    {
+        "id": "e637bf473c8f5f01",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-opcua": "0.2.342"
+        }
+    }
+]
